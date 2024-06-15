@@ -1,0 +1,78 @@
+.breadCrum-text {
+  color: #764ee8 !important;
+}
+
+.font-jakarta {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.ant-table-wrapper .ant-table-thead > tr > th {
+  background-color: white !important;
+  padding: 8px 17px;
+  color: #afb8cd;
+  font-weight: 700;
+  font-size: 10px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.ant-table-wrapper .ant-table-thead > tr {
+  border-radius: 4px;
+}
+
+.ant-table-wrapper .ant-table {
+  background: none;
+}
+
+.ant-table-wrapper .ant-table-pagination.ant-pagination {
+  display: none;
+}
+
+.input:focus {
+  outline: none !important;
+  border: 1px solid #764ee8;
+  box-shadow: 0 0 10px #719ece;
+}
+
+.ant-form-item-label {
+  font-weight: 400;
+  font-size: 18px;
+  color: #000000;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  padding-bottom: 5px !important;
+}
+
+.ant-input {
+  padding: 8px;
+}
+
+.ant-input:focus {
+  outline: none;
+  border: 1px solid #764ee8;
+  box-shadow: none;
+}
+
+.ant-select-single {
+  height: 38px;
+}
+
+.ant-select-single:focus {
+  outline: none;
+  border: 1px solid #764ee8;
+  box-shadow: none;
+}
+
+.ant-form-item {
+  margin-bottom: 1px;
+}
+
+.ant-menu-light .ant-menu-item-selected {
+  background-color: #f2eeff;
+  color: #764EE8;
+}
+
+.ant-menu-inline .ant-menu-item {
+  margin-inline: 12px;
+  width: calc(93% - 8px);
+}

@@ -3,13 +3,14 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import ViewProduts from './components/ViewProduts';
 import AddProduct from './components/AddProduct';
 import EditProduct from './components/EditProduct';
+import DashBoard from './components/DashBoard';
 
 function App() {
   return (
     <>
     <Router>
       <Routes>
-        <Route path='/' element={< ViewProduts/>}/>
+        <Route path='/' element={< DashBoard/>}/>
         <Route path='/add' element={< AddProduct/>}/>
         <Route path='/edit' element={< EditProduct/>}/>
       </Routes>
