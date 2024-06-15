@@ -63,7 +63,7 @@ const DashBoard = () => {
       </Sider>
       <Layout>
         <Content className="md:mx-[40px] mx-2">
-          <div className="grid grid-cols-12  content-center md:py-7 py-3 ">
+          <div className="grid grid-cols-12  content-center md:py-2 py-3 ">
             <div className="col-span-9  mt-6">
               <Breadcrumb style={{}}>
                 <Breadcrumb.Item className="breadCrum-text text-[13px] font-jakarta font-semibold">
@@ -74,9 +74,9 @@ const DashBoard = () => {
             <div className="col-span-1  flex justify-end">
               <img src={Notification} className="w-7 "/>
             </div>
-            <div className="col-span-2 grid grid-cols-2 bg-white p-3 rounded-[100px] ml-10">
-              <div>
-                <img src={ProfileImg} className="w-11 rounded-full border border-[#000000]"/>
+            <div className="col-span-2 grid grid-cols-2 bg-white p-1 rounded-[100px] ml-10">
+              <div className="pt-[5px]">
+                <img src={ProfileImg} className="w-8 rounded-full border border-[#000000] mx-auto"/>
               </div>
               <div>
                 <div>dfgffd</div>
