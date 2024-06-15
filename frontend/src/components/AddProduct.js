@@ -14,6 +14,7 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import { EMPTY_FEILD_VALIDATION } from "../helpers/helper";
 import axios from "axios";
+import {useNavigate} from "react-router-dom"
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -32,6 +33,7 @@ const AddProduct = ({ isEdit = false }) => {
   const [quantity, setQuantity] = useState(null);
   const [catagory, setCatagory] = useState(null);
   const [photos, setPhotos] = useState(null);
+  const navigate = useNavigate()
 
   console.log(
     productSKU,
@@ -83,6 +85,8 @@ const AddProduct = ({ isEdit = false }) => {
   );
 
   const handleSubmit = async () => {
+    form.validateFields();
+
     try {
       if (!fileList.length)
         notification.error({
@@ -98,18 +102,15 @@ const AddProduct = ({ isEdit = false }) => {
         formData.append("unitPrice", unitPrice);
         formData.append("quantity", quantity);
         formData.append("catagory", catagory);
-        for (let i = 0; i < fileList.length; i++) {
-          formData.append("photos", fileList[i]);
-        }
-        formData.append("photos", photos);
-
+        fileList.forEach((file) => {
+          formData.append("photos", file.originFileObj);
+        });
         await axios.post(`${process.env.REACT_APP_BASE_URL}/post`, formData);
         notification.success({
           message: "Post Added Successfully",
           placement: "topRight",
         });
-        form.resetFields();
-        setFileList([]);
+        navigate("/")
       }
     } catch (error) {
       notification.success({
@@ -184,7 +185,6 @@ const AddProduct = ({ isEdit = false }) => {
                 rules={EMPTY_FEILD_VALIDATION}
               >
                 <Select
-                  showSearch
                   optionFilterProp="children"
                   onSelect={(e) => setUnit(e)}
                   filterOption={(input, option) =>
@@ -232,7 +232,6 @@ const AddProduct = ({ isEdit = false }) => {
                 rules={EMPTY_FEILD_VALIDATION}
               >
                 <Select
-                  showSearch
                   optionFilterProp="children"
                   onSelect={(e) => setCatagory(e)}
                   filterOption={(input, option) =>
@@ -283,6 +282,7 @@ const AddProduct = ({ isEdit = false }) => {
                 onChange={handleChange}
                 customRequest={null}
                 showUploadList={{ showRemoveIcon: false }}
+                multiple
               >
                 {fileList.length >= 8 ? null : uploadButton}
               </Upload>
@@ -307,7 +307,7 @@ const AddProduct = ({ isEdit = false }) => {
           <Button
             className="h-full md:px-[63px] rounded-lg bg-[#764EE8] text-[#FFFFFF] font-medium text-[13px] font-jakarta py-[10px]"
             onClick={() => {
-              form.validateFields().then(() => handleSubmit());
+              handleSubmit();
             }}
           >
             Add Product

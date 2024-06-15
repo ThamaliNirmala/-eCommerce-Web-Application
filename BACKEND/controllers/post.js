@@ -30,7 +30,7 @@ exports.createPost = async (req, res) => {
       console.error(err);
       return res.status(500).json({ message: "File upload error" });
     }
-
+    console.log("req.files ===>", req.files);
     try {
       const {
         productSKU,
@@ -39,6 +39,7 @@ exports.createPost = async (req, res) => {
         unit,
         unitPrice,
         catagory,
+        quantity
       } = req.body;
       const removeString = "..\\frontend\\public\\images\\";
       const images = req.files.map((file) => file.path.split(removeString)[1]);
@@ -51,6 +52,7 @@ exports.createPost = async (req, res) => {
         unitPrice,
         catagory,
         images,
+        quantity
       });
 
       await newPost.save();

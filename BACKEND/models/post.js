@@ -8,6 +8,7 @@ const Post = new Schema({
   unit: String,
   unitPrice: Number,
   catagory: String,
+  quantity: Number,
   images: []
 });
 
