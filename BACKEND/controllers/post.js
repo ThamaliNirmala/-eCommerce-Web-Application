@@ -40,7 +40,8 @@ exports.createPost = async (req, res) => {
         unitPrice,
         catagory,
       } = req.body;
-      const images = req.files.map((file) => file.path);
+      const removeString = "..\\frontend\\public\\images\\";
+      const images = req.files.map((file) => file.path.split(removeString)[1]);
 
       const newPost = new Post({
         productSKU,
@@ -55,6 +56,88 @@ exports.createPost = async (req, res) => {
       await newPost.save();
 
       res.status(201).json(newPost);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  });
+};
+
+exports.getPosts = async (req, res) => {
+  try {
+    const posts = await Post.find();
+
+    res.status(201).json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.getPostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findById(id);
+
+    res.status(201).json(post);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.deletePostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Post.findByIdAndDelete(id);
+
+    res.status(201).json("Post Deleted Successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.updatePost = async (req, res) => {
+  upload.array("photos", 10)(req, res, async (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "File upload error" });
+    }
+
+    try {
+      const {
+        productSKU,
+        productName,
+        productDesc,
+        unit,
+        unitPrice,
+        catagory,
+      } = req.body;
+
+      const { id } = req.params;
+      const removeString = "..\\frontend\\public\\images\\";
+      const images = req.files.map((file) => file.path.split(removeString)[1]);
+      const post = await Post.findById(id);
+
+      if (!post) {
+        return res.status(404).json({ message: "Post not found" });
+      }
+
+      // Append new photos to existing photos
+      const newImages = post.images.concat(images);
+
+      await Post.findByIdAndUpdate(id, {
+        productSKU,
+        productName,
+        productDesc,
+        unit,
+        unitPrice,
+        catagory,
+        images: newImages,
+      });
+
+      res.status(200).json("Update Successfully");
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
