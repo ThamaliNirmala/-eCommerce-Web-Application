@@ -5,14 +5,7 @@ import Notification from "../assets/Produt/notification.svg";
 import ProductIcon from "../assets/Menu/products-active.svg";
 import Analytics from "../assets/Menu/analytics-inactive.svg";
 import ProfileImg from "../assets/Header/profile-img.png";
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  BellOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+
 import { Breadcrumb, Layout, Menu, theme, Divider } from "antd";
 import ViewProduts from "./ViewProduts";
 import AddProduct from "./AddProduct";
@@ -47,7 +40,6 @@ const DashBoard = () => {
   } = theme.useToken();
 
   const { page, id } = queryString.parse(window.location.search);
-  console.log("Page", page);
   return (
     <Layout
       style={{
@@ -101,7 +93,7 @@ const DashBoard = () => {
           </div>
           <Divider className="m-0" />
           <div>
-            {!renderPage && <ViewProduts />}
+            {(!renderPage || renderPage == 0) && <ViewProduts />}
             {renderPage === "addProduct" && <AddProduct />}
             {renderPage === "editProduct" && <AddProduct isEdit={true} />}
           </div>

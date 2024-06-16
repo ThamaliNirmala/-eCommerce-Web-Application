@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -14,7 +14,8 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import { EMPTY_FEILD_VALIDATION } from "../helpers/helper";
 import axios from "axios";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import queryString from "query-string";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -33,17 +34,43 @@ const AddProduct = ({ isEdit = false }) => {
   const [quantity, setQuantity] = useState(null);
   const [catagory, setCatagory] = useState(null);
   const [photos, setPhotos] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [isUpdated, setIsUpdated] = useState(false);
 
-  console.log(
-    productSKU,
-    productName,
-    productDesc,
-    unit,
-    unitPrice,
-    quantity,
-    catagory
-  );
+  const { page, id } = queryString.parse(window.location.search);
+  useEffect(() => {
+    if (isEdit && id)
+      (async () =>
+        await axios
+          .get(`${process.env.REACT_APP_BASE_URL}/post/${id}`)
+          .then((res) => {
+            form.setFieldValue("productSku", res.data.productSKU);
+            form.setFieldValue("productName", res.data.productName);
+            form.setFieldValue("productDesc", res.data.productDesc);
+            form.setFieldValue("selectUnit", res.data.unit);
+            form.setFieldValue("unitPrice", res.data.unitPrice);
+            form.setFieldValue("quantity", res.data.quantity);
+            form.setFieldValue("selectCategory", res.data.catagory);
+
+            setProductSKU(res.data.productSKU);
+            setProductName(res.data.productName);
+            setProductDesc(res.data.productDesc);
+            setUnit(res.data.unit);
+            setUnitPrice(res.data.unitPrice);
+            setQuantity(res.data.quantity);
+            setCatagory(res.data.catagory);
+            setFileList(
+              res.data.images.map((el) => ({ url: "/images/" + el }))
+            );
+            setIsUpdated(false);
+          })
+          .catch((err) =>
+            notification.error({
+              message: "Server Error",
+              placement: "topRight",
+            })
+          ))();
+  }, [isEdit, isUpdated]);
 
   const [form] = Form.useForm();
   const nameValue = Form.useWatch("name", form);
@@ -56,7 +83,6 @@ const AddProduct = ({ isEdit = false }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState([]);
-  console.log("fileList", fileList);
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -85,9 +111,8 @@ const AddProduct = ({ isEdit = false }) => {
   );
 
   const handleSubmit = async () => {
-    form.validateFields();
-
     try {
+      await form.validateFields();
       if (!fileList.length)
         notification.error({
           message: "You Should Upload at least one Image",
@@ -102,16 +127,52 @@ const AddProduct = ({ isEdit = false }) => {
         formData.append("unitPrice", unitPrice);
         formData.append("quantity", quantity);
         formData.append("catagory", catagory);
-        fileList.forEach((file) => {
-          formData.append("photos", file.originFileObj);
-        });
-        await axios.post(`${process.env.REACT_APP_BASE_URL}/post`, formData);
+        fileList
+          .filter((el) => el.name)
+          .forEach((file) => {
+            formData.append("photos", file.originFileObj);
+          });
+        if (isEdit) {
+          await axios
+            .put(`${process.env.REACT_APP_BASE_URL}/post/${id}`, formData)
+            .then(() => {
+              notification.success({
+                message: "Post Updated Successfully",
+                placement: "topRight",
+              });
+              setIsUpdated(true);
+            });
+        } else {
+          await axios
+            .post(`${process.env.REACT_APP_BASE_URL}/post`, formData)
+            .then(() => {
+              notification.success({
+                message: "Post Added Successfully",
+                placement: "topRight",
+              });
+              setIsUpdated(true);
+              navigate("/");
+            });
+        }
+      }
+    } catch (error) {
+      notification.success({
+        message: "Error occured",
+        placement: "topRight",
+      });
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`${process.env.REACT_APP_BASE_URL}/post/${id}`).then(() => {
         notification.success({
-          message: "Post Added Successfully",
+          message: "Post Deleted Successfully",
           placement: "topRight",
         });
-        navigate("/")
-      }
+        setIsUpdated(true);
+        navigate("/");
+      });
     } catch (error) {
       notification.success({
         message: "Error occured",
@@ -124,7 +185,7 @@ const AddProduct = ({ isEdit = false }) => {
     <div>
       <div className="md:mt-[28px] ml-3 mt-[20px]">
         <h1 className="font-semibold md:text-[26px] text-[20px] text-[#000000] font-jakarta">
-          Add Product
+          {isEdit ? "Edit" : "Add"} Product
         </h1>
 
         <div className="grid md:grid-cols-12  gap-3 mt-5 mb-10">
@@ -274,7 +335,7 @@ const AddProduct = ({ isEdit = false }) => {
               tellus enim
             </p>
 
-            <div>
+            <div className="mt-5">
               <Upload
                 listType="picture-card"
                 fileList={fileList}
@@ -305,12 +366,18 @@ const AddProduct = ({ isEdit = false }) => {
         </div>
         <div className="flex justify-end mb-8">
           <Button
-            className="h-full md:px-[63px] rounded-lg bg-[#764EE8] text-[#FFFFFF] font-medium text-[13px] font-jakarta py-[10px]"
-            onClick={() => {
-              handleSubmit();
-            }}
+            className="h-full md:px-[63px] rounded-lg bg-[red] text-[#FFFFFF] font-medium text-[13px] font-jakarta py-[10px]"
+            onClick={handleDelete}
+            type="button"
           >
-            Add Product
+            Delete Product
+          </Button>{" "}
+          <Button
+            className="h-full md:px-[63px] rounded-lg bg-[#764EE8] text-[#FFFFFF] font-medium text-[13px] font-jakarta py-[10px]"
+            onClick={handleSubmit}
+            type="button"
+          >
+            {isEdit ? "Edit" : "Add"} Product
           </Button>
         </div>
       </div>

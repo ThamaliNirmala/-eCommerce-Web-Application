@@ -4,9 +4,11 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Tag, notification } from "antd";
 import Search from "../assets/Produt/search.svg";
 import { useNavigate } from "react-router-dom";
+import queryString from "query-string";
 const { Column, ColumnGroup } = Table;
 
 const ViewProduts = () => {
+  const { page, id } = queryString.parse(window.location.search);
   const [posts, setPosts] = useState([]);
   const [query, setQuery] = useState("");
   const [filteredPosts, setFilteredPosts] = useState([]);
@@ -77,6 +79,15 @@ const ViewProduts = () => {
         <div>
           <Table
             dataSource={[...filteredPosts]}
+            rowClassName={"cursor-pointer"}
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: (event) => {
+                  navigate(`?page=editProduct&id=${record._id}`);
+                }, // click row
+              };
+
+            }}
             // scroll={{
             //   x: 1500,
             //   y: 300,

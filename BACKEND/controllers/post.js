@@ -30,7 +30,7 @@ exports.createPost = async (req, res) => {
       console.error(err);
       return res.status(500).json({ message: "File upload error" });
     }
-    console.log("req.files ===>", req.files);
+
     try {
       const {
         productSKU,
@@ -69,7 +69,7 @@ exports.getPosts = async (req, res) => {
   try {
     const posts = await Post.find();
 
-    res.status(201).json(posts);
+    res.status(200).json(posts);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
@@ -81,7 +81,7 @@ exports.getPostById = async (req, res) => {
     const { id } = req.params;
     const post = await Post.findById(id);
 
-    res.status(201).json(post);
+    res.status(200).json(post);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
@@ -93,7 +93,7 @@ exports.deletePostById = async (req, res) => {
     const { id } = req.params;
     await Post.findByIdAndDelete(id);
 
-    res.status(201).json("Post Deleted Successfully");
+    res.status(200).json("Post Deleted Successfully");
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
@@ -115,6 +115,7 @@ exports.updatePost = async (req, res) => {
         unit,
         unitPrice,
         catagory,
+        quantity
       } = req.body;
 
       const { id } = req.params;
@@ -137,6 +138,7 @@ exports.updatePost = async (req, res) => {
         unitPrice,
         catagory,
         images: newImages,
+        quantity
       });
 
       res.status(200).json("Update Successfully");
