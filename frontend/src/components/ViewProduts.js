@@ -97,16 +97,16 @@ const ViewProduts = () => {
               title="PRODUCTS"
               key="productName"
               render={(record) => (
-                <div className="grid grid-cols-2">
-                  <div className="w-16 ">
+                <div className="grid grid-cols-5">
+                  <div className="size-16 col-span-1">
                     <img
                       src={`/images/${record.images?.[0]}`}
                       className="object-cover"
                     />
                   </div>
-                  <div>
-                    <div>{record.productName}</div>
-                    <div>{record.productSKU}</div>
+                  <div className="col-span-4">
+                    <div className="text-[#000000] font-normal text-14">{record.productName}</div>
+                    <div className="text-[#AFB8CD] font-bold text-10px">{record.productSKU}</div>
                   </div>
                 </div>
               )}
@@ -114,27 +114,27 @@ const ViewProduts = () => {
             <Column
               title="Category"
               key="category"
-              render={(record) => <div className="">{record.catagory}</div>}
+              render={(record) => <div className="text-[#000000] font-normal text-14"><span className="text-[#764EE8] font-semibold text-[12px] bg-[#F2EEFF] px-[8px] py-[1px] rounded-[100px]">{record.catagory}</span></div>}
             />
             <Column
               title="Quantity"
               key="quantity"
               render={(record) => (
-                <div className="">${record.quantity.toFixed(2)}</div>
+                <div className="text-[#000000] font-normal text-14">${record.quantity.toFixed(2)}</div>
               )}
             />
             <Column
               title="Unit Price"
               key="unitPrice"
               render={(record) => (
-                <div className="">${record.unitPrice.toFixed(2)}</div>
+                <div className="text-[#000000] font-normal text-14">${record.unitPrice.toFixed(2)}</div>
               )}
             />
             <Column
               title="TOTAL REVENUE"
               key="totalRevnue"
               render={(record) => (
-                <div className="">
+                <div className="text-[#000000] font-normal text-14">
                   ${(record.quantity * record.unitPrice).toFixed(2)}
                 </div>
               )}

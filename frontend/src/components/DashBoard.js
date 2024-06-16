@@ -68,26 +68,53 @@ const DashBoard = () => {
       <Layout>
         <Content className="md:mx-[40px] mx-2">
           <div className="grid grid-cols-12  content-center md:py-2 py-3 ">
-            <div className="col-span-9  mt-6">
+            <div className="col-span-8  mt-6">
               <Breadcrumb style={{}}>
-                <Breadcrumb.Item className="breadCrum-text text-[13px] font-jakarta font-semibold">
-                  Products
+                <Breadcrumb.Item className=" text-[13px] font-jakarta font-semibold">
+                  <span
+                    className={`${
+                      renderPage ? "text-[#AFB8CD]" : "text-[#764EE8]"
+                    }`}
+                  >
+                    Products{" "}
+                  </span>
+                  {renderPage === "addProduct" ? (
+                    <span
+                      className={`${
+                        !renderPage ? "text-[#AFB8CD]" : "text-[#764EE8]"
+                      }`}
+                    >
+                      {" "}
+                      {">"} Add Product
+                    </span>
+                  ) : renderPage === "editProduct" ? (
+                    <span
+                      className={`${
+                        !renderPage ? "text-[#AFB8CD]" : "text-[#764EE8]"
+                      }`}
+                    >
+                      {" "}
+                      {">"} Edit Product
+                    </span>
+                  ) : (
+                    ""
+                  )}
                 </Breadcrumb.Item>
               </Breadcrumb>
             </div>
-            <div className="col-span-1  flex justify-end">
+            <div className="col-span-1 ml-[7px] flex justify-end">
               <img src={Notification} className="w-7 " />
             </div>
-            <div className="col-span-2 grid grid-cols-2 bg-white p-1 rounded-[100px] ml-10">
-              <div className="pt-[5px]">
+            <div className="col-span-3 grid grid-cols-3 bg-white p-1 ml-[70px] rounded-[100px] ">
+              <div className="pt-[5px] col-span-1 ">
                 <img
                   src={ProfileImg}
-                  className="w-8 rounded-full border border-[#000000] mx-auto"
+                  className="w-8 rounded-full border border-[#000000] mx-auto md:block hidden"
                 />
               </div>
-              <div>
-                <div>dfgffd</div>
-                <div>dfgffd</div>
+              <div className="col-span-2 hidden md:block">
+                <div className="text-[13px] font-normal font-jakarta text-[#313234]">Everon Supplies</div>
+                <div className="font-normal text-[10px] font-jakarta text-[#000000]">bridget@gmail.com</div>
               </div>
             </div>
           </div>

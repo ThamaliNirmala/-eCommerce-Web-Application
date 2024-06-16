@@ -165,14 +165,16 @@ const AddProduct = ({ isEdit = false }) => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`${process.env.REACT_APP_BASE_URL}/post/${id}`).then(() => {
-        notification.success({
-          message: "Post Deleted Successfully",
-          placement: "topRight",
+      await axios
+        .delete(`${process.env.REACT_APP_BASE_URL}/post/${id}`)
+        .then(() => {
+          notification.success({
+            message: "Post Deleted Successfully",
+            placement: "topRight",
+          });
+          setIsUpdated(true);
+          navigate("/");
         });
-        setIsUpdated(true);
-        navigate("/");
-      });
     } catch (error) {
       notification.success({
         message: "Error occured",
@@ -365,13 +367,15 @@ const AddProduct = ({ isEdit = false }) => {
           </div>
         </div>
         <div className="flex justify-end mb-8">
-          <Button
-            className="h-full md:px-[63px] rounded-lg bg-[red] text-[#FFFFFF] font-medium text-[13px] font-jakarta py-[10px]"
-            onClick={handleDelete}
-            type="button"
-          >
-            Delete Product
-          </Button>{" "}
+          {isEdit && (
+            <Button
+              className="h-full md:px-[63px] rounded-lg bg-[red] text-[#FFFFFF] font-medium text-[13px] font-jakarta py-[10px]"
+              onClick={handleDelete}
+              type="button"
+            >
+              Delete Product
+            </Button>
+          )}
           <Button
             className="h-full md:px-[63px] rounded-lg bg-[#764EE8] text-[#FFFFFF] font-medium text-[13px] font-jakarta py-[10px]"
             onClick={handleSubmit}

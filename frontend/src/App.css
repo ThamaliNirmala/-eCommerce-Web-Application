@@ -76,3 +76,13 @@
   margin-inline: 12px;
   width: calc(93% - 8px);
 }
+
+
+.anticon svg {
+  display: inline-block;
+  color: #000000;
+}
+
+.ant-layout .ant-layout-sider-trigger {
+  background: white;
+}
