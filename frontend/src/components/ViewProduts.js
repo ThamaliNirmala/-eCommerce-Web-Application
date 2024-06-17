@@ -49,8 +49,8 @@ const ViewProduts = () => {
           <Input
             placeholder="Search"
             type="search"
-            prefix={<SearchOutlined className="mr-2 text-[#D0D5DD]" />}
-            className="w-full py-2 px-4 rounded-lg"
+            prefix={<SearchOutlined className="mr-2 text-[#D0D5DD] font-jakarta" />}
+            className="w-full py-2 px-4 rounded-lg ont-jakarta"
             onChange={(e) => {
               if (e.target.value) setQuery(e.target.value);
               else setFilteredPosts(posts);
@@ -97,16 +97,16 @@ const ViewProduts = () => {
               title="PRODUCTS"
               key="productName"
               render={(record) => (
-                <div className="grid grid-cols-5">
+                <div className="grid grid-cols-5 content-center">
                   <div className="size-16 col-span-1">
                     <img
                       src={`/images/${record.images?.[0]}`}
-                      className="object-cover"
+                      className="object-cover rounded-[8px]"
                     />
                   </div>
                   <div className="col-span-4">
-                    <div className="text-[#000000] font-normal text-14">{record.productName}</div>
-                    <div className="text-[#AFB8CD] font-bold text-10px">{record.productSKU}</div>
+                    <div className="text-[#000000] font-normal text-[14px] mt-2">{record.productName}</div>
+                    <div className="text-[#AFB8CD] font-bold text-[10px] mt-2">{record.productSKU}</div>
                   </div>
                 </div>
               )}

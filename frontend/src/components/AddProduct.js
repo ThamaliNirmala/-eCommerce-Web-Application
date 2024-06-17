@@ -369,7 +369,7 @@ const AddProduct = ({ isEdit = false }) => {
         <div className="flex justify-end mb-8">
           {isEdit && (
             <Button
-              className="h-full md:px-[63px] rounded-lg bg-[red] text-[#FFFFFF] font-medium text-[13px] font-jakarta py-[10px]"
+              className="h-full md:px-[63px] rounded-lg  text-[#E84E4E] font-semibold text-[13px] font-jakarta py-[10px]"
               onClick={handleDelete}
               type="button"
             >
